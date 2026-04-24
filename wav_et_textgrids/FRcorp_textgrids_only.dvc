@@ -1,0 +1,6 @@
+outs:
+- md5: 50da5146d4f5bfb23ab24255768db529.dir
+  size: 136206216
+  nfiles: 5928
+  hash: md5
+  path: FRcorp_textgrids_only
