@@ -1,0 +1,36 @@
+stages:
+  ensure_16k_sr:
+    cmd: python resample.py
+    deps:
+    - resample.py
+    - wav_et_textgrids/FRcorp_textgrids_only/
+
+  build_metadata:
+    cmd: python build_dataframe.py
+    deps:
+    - build_dataframe.py
+    - wav_et_textgrids/FRcorp_textgrids_only/
+
+  get_representations:
+    cmd: python get_rep.py
+    deps:
+    - get_rep.py
+    - build_dataframe.py
+
+  convert_to_different_precisions:
+    cmd: python convert.py
+    deps: 
+    - get_rep.py
+    - convert.py
+
+  compute_distances:
+    cmd: python compute_dist.py
+    deps:
+    - compute_dist.py
+    - convert.py
+
+  make_plot:
+    cmd: python plotting.py
+    deps:
+    - compute_dist.py
+    - plotting.py
