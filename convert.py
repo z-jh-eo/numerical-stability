@@ -9,7 +9,7 @@ def quantize_uint8(x: torch.Tensor):
     x_max = x.max(dim=1, keepdim=True).values
     scale = (x_max - x_min) / 255.0
     scale = torch.clamp(scale, min=1e-8)
-    q = ((x - x_min) / scale).round().clamp(0, 225).to(torch.uint8)
+    q = ((x - x_min) / scale).round().clamp(0, 255).to(torch.uint8)
     return q, x_min.squeeze(1), scale.squeeze(1)
 
 

@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import os
 
 IN_PATH = "result.tsv"
+LONG_PATH = "dist_long.tsv"
 OUTDIR  = "plots"
 
 df = pd.read_csv(IN_PATH, sep="\t")
@@ -17,6 +18,7 @@ df1 = pd.melt(
 )
 df1["Type"] = df1["Type"].str.split("_").str[0]
 
+dist_df = pd.read_csv(LONG_PATH, sep="\t")
 
 plt.figure()
 sns.barplot(
@@ -54,3 +56,21 @@ plt.xlabel("Precision")
 plt.ylabel("Size(MB)")
 plt.savefig(f"{OUTDIR}/size.png")
 plt.close()
+
+
+# ----- New distribution plots -----
+# KDE plot per precision
+g = sns.FacetGrid(dist_df, col="Precision", hue="Type", col_wrap=2, sharex=True, sharey=True)
+g.map(sns.kdeplot, "Distance", fill=True, alpha=0.4)
+g.add_legend()
+g.fig.suptitle("Distance Distributions (KDE)", y=1.02)
+g.savefig(f"{OUTDIR}/dist_kde.png")
+plt.close(g.fig)
+
+# Histogram plot per precision
+g2 = sns.FacetGrid(dist_df, col="Precision", hue="Type", col_wrap=2, sharex=True, sharey=True)
+g2.map(sns.histplot, "Distance", bins=40, alpha=0.5, stat="density")
+g2.add_legend()
+g2.fig.suptitle("Distance Distributions (Histogram)", y=1.02)
+g2.savefig(f"{OUTDIR}/dist_hist.png")
+plt.close(g2.fig)
